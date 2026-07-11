@@ -1,0 +1,57 @@
+client/
+├── public/               # Static assets (favicons, robots.txt)
+├── src/
+│   ├── assets/           # Local images, global CSS files
+│   ├── components/       # Dumb/Reusable UI components
+│   │   ├── layout/       # Navbar, Footer, Sidebar
+│   │   └── ui/           # Buttons, Modals, Input fields (styled components)
+│   ├── features/         # Domain-specific logic and state
+│   │   ├── auth/         # Login form, Auth Context/Redux slice
+│   │   └── posts/        # Markdown editor, Post Feed grid, Comment section
+│   ├── hooks/            # Custom React hooks
+│   │   ├── useAuth.js    # Exposes current user state
+│   │   └── useFetch.js   # Custom wrapper for handling loading/error states
+│   ├── pages/            # Top-level route components
+│   │   ├── Home.jsx      # Maps to '/' (Displays the paginated feed)
+│   │   ├── PostView.jsx  # Maps to '/post/:slug' (Reads a single article)
+│   │   └── Dashboard.jsx # Maps to '/admin' (Protected, for writing posts)
+│   ├── services/         # API communication layer
+│   │   └── api.js        # Axios instance configured with `withCredentials: true`
+│   ├── utils/            # Frontend helpers
+│   │   ├── formatDate.js # Converts MongoDB timestamps to "2 days ago"
+│   │   └── markdown.js   # Configures the react-markdown parser
+│   ├── App.jsx           # Global Router configuration (React Router Dom)
+│   └── main.jsx          # Mounts React to the DOM, wraps Providers
+├── .env                  # VITE_API_BASE_URL (http://localhost:5000/api)
+└── package.json          # Frontend dependencies
+
+
+
+
+server/
+├── config/               # Configuration files (Connections to external services)
+│   ├── db.js             # Mongoose connection logic
+│   ├── cloudinary.js     # Image CDN setup for blog thumbnails
+│   └── corsOptions.js    # Strict CORS rules for frontend communication
+├── controllers/          # The "Brains" (Business logic for each route)
+│   ├── authController.js # Handles login, cookie setting, token refresh
+│   ├── postController.js # CRUD for posts, aggregation queries, pagination
+│   └── userController.js # Profile updates, fetching authors
+├── middleware/           # The "Gatekeepers" (Functions that run before controllers)
+│   ├── auth.js           # Validates HTTP-Only cookies/JWTs
+│   ├── errorHandler.js   # Global error catching (prevents app crashes)
+│   └── upload.js         # Multer configuration for accepting image files
+├── models/               # The "Skeletons" (Mongoose Database Schemas)
+│   ├── User.js           # Password hashing pre-save hooks go here
+│   ├── Post.js           # Includes arrays for tags and nested comment refs
+│   └── Comment.js        # Standalone schema for deep comment threading
+├── routes/               # The "Traffic Cops" (Directs URLs to Controllers)
+│   ├── authRoutes.js     # /api/auth/login, /api/auth/logout
+│   ├── postRoutes.js     # /api/posts, /api/posts/:id
+│   └── userRoutes.js     # /api/users/profile
+├── utils/                # Reusable helper functions
+│   ├── generateToken.js  # JWT signing logic
+│   └── textParser.js     # Strips malicious HTML from Markdown inputs
+├── .env                  # SECRET variables (DB URI, JWT keys - NEVER commit this)
+├── server.js             # The entry point that glues it all together
+└── package.json          # Backend dependencies
